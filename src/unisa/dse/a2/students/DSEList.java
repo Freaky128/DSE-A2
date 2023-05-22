@@ -91,11 +91,84 @@ public class DSEList implements List {
 	}
 
 	//add the parameter String at of the end of the list
-	public boolean add(String obj) {
+	public boolean add(String obj) throws NullPointerException{
+		if (obj != null) {
+			Node n = new Node(null, this.tail, obj);
+			
+			if (this.isEmpty()) {
+				this.head = n;
+				this.tail = n;
+			}
+			else {
+				this.tail.next = n;
+				this.tail = n;
+			}
+			
+			//debug
+			Node current = this.head;
+			for (int i = 0; i < this.size(); i++) {
+				System.out.println("node: " + current + " node text: " + current.getString() + " previous: " + current.prev + " next: " + current.next);
+				current = current.next;
+			}
+			System.out.println();
+			//debug end
+			
+			return true;
+		}
+		else {
+			throw new NullPointerException();
+		}
 	}
 
 	//add String at parameter's index
-	public boolean add(int index, String obj) {
+	public boolean add(int index, String obj) throws NullPointerException, IndexOutOfBoundsException{
+		if (obj != null) {
+			
+			if (index == 0) {
+				Node n = new Node(this.head, null, obj);
+				this.head.prev = n;
+				this.head = n;
+				
+			}
+			else if(index == this.size()) {
+				Node n = new Node(null, this.tail, obj);
+				this.tail.next = n;
+				this.tail = n;
+
+			}
+			else if (index > this.size() && index < 0) {
+				throw new IndexOutOfBoundsException();
+				
+			}
+			else {
+				int count = 0;
+				Node current = this.head;
+				
+				while (count < (index - 1)) {
+					current = current.next;
+					count ++;
+				}
+				
+				Node n = new Node(current.next, current, obj);
+				current.next = n;
+				current = n.next;
+				current.prev = n;
+			}
+			
+			//debug
+			Node current = this.head;
+			for (int i = 0; i < this.size(); i++) {
+				System.out.println("node: " + current + " node text: " + current.getString() + " previous: " + current.prev + " next: " + current.next);
+				current = current.next;
+			}
+			System.out.println();
+			//debug end
+			
+			return true;			
+		}
+		else {
+			throw new NullPointerException();
+		}
 	}
 
 	//searches list for parameter's String return true if found
