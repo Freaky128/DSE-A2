@@ -8,13 +8,21 @@ import unisa.dse.a2.interfaces.List;
  */
 public class DSEList implements List {
 	
-	public Node head;
-	private Node tail;
+	public Node head = null;
+	private Node tail = null;
 
-	public DSEList() {
+	public DSEList() {}
+	
+	public DSEList(Node head) {
+		this.head = head;
+		Node current = this.head;
 		
-	}
-	public DSEList(Node head_) {
+		while (current.next != null) {
+			current = current.next;
+		}
+		
+		this.tail = current;
+		
 	}
 	
 	//Takes a list then adds each element into a new list
@@ -32,14 +40,49 @@ public class DSEList implements List {
 	
 	//returns String at parameter's index
 	public String get(int index) {
+		if (index < this.size() && index >= 0) {
+			int count = 0;
+			Node current = this.head;
+			
+			while (count < index) {
+				current = current.next;
+				count ++;
+			}
+			
+			return current.getString();
+						
+		}
+		else {
+			return null;
+		}
 	}
 
 	//checks if there is a list
 	public boolean isEmpty() {
+		if (this.head == null) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	//return the size of the list
 	public int size() {
+		int count = 0;
+		Node current = null;
+		
+		if (!this.isEmpty()) {
+			current = this.head;
+			count++; 
+			
+			while (current.next != null) {
+				current = current.next;
+				count++;
+			}
+		}
+		
+		return count;
 	}
 	
 	//Take each element of the list a writes them to a string 
