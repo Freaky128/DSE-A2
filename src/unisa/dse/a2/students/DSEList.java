@@ -88,6 +88,19 @@ public class DSEList implements List {
 	//Take each element of the list a writes them to a string 
 	@Override
 	public String toString() {
+		String concat = "";
+		Node current = this.head;
+		
+		for (int i = 0; i < this.size(); i++) {
+			concat += current.getString();
+			if (current != this.tail) { // might have to change to equals method
+				concat += " ";
+			}
+			
+			current = current.next;
+		}
+		
+		return concat;
 	}
 
 	//add the parameter String at of the end of the list
