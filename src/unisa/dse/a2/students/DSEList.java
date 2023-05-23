@@ -289,12 +289,37 @@ public class DSEList implements List {
 	
 	@Override
 	public int hashCode() {
-		return 0;
+		Node current = this.head;
+		int hash = 0;
+		
+		for (int i = 0; i < this.size(); i++) {
+			hash += current.hashCode();
+			current = current.next;
+		}
+		
+		return hash;
 	}
 
 	@Override
 	public boolean equals(Object other) {
-		return true;
+		if (this.size() == ((DSEList)other).size()) {
+			Node thisCurrent = this.head;
+			Node otherCurrent = ((DSEList)other).head;
+			
+			for (int i = 0; i < this.size(); i++) {
+				if (thisCurrent.equals(otherCurrent)) {
+					thisCurrent = thisCurrent.next;
+					otherCurrent = otherCurrent.next;
+				}
+				else {
+					return false;
+				}
+			}
+			
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public void dPrint() {

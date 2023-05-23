@@ -65,7 +65,7 @@ public class ListTest extends DSUnitTesting {
 		}
 
 		s.add(new String(""+2));
-		assertEquals("Changes to original list should not impact the second list", 1, 1);
+		assertEquals("Changes to original list should not impact the second list", 1, 1); // ???
 
 	}
 
