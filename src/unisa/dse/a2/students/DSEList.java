@@ -34,7 +34,7 @@ public class DSEList implements List {
 		String token = "";
 		Node current = null;
 		
-		if (index == 0) { // could use a switch instead?
+		if (index == 0) { // could use a switch instead? // doesn't work for list of 1 node
 			token = this.head.getString();
 			
 			current = this.head.next;
@@ -156,15 +156,6 @@ public class DSEList implements List {
 				this.tail = n;
 			}
 			
-			//debug
-			Node current = this.head;
-			for (int i = 0; i < this.size(); i++) {
-				System.out.println("node: " + current + " node text: " + current.getString() + " previous: " + current.prev + " next: " + current.next);
-				current = current.next;
-			}
-			System.out.println();
-			//debug end
-			
 			return true;
 		}
 		else {
@@ -207,15 +198,6 @@ public class DSEList implements List {
 				current.prev = n;
 			}
 			
-			//debug
-			Node current = this.head;
-			for (int i = 0; i < this.size(); i++) {
-				System.out.println("node: " + current + " node text: " + current.getString() + " previous: " + current.prev + " next: " + current.next);
-				current = current.next;
-			}
-			System.out.println();
-			//debug end
-			
 			return true;			
 		}
 		else {
@@ -228,7 +210,44 @@ public class DSEList implements List {
 	}
 
 	//removes the parameter's String form the list
-	public boolean remove(String obj) {
+	public boolean remove(String obj) throws NullPointerException{
+		if (obj != null) {
+			
+			Node current = this.head;
+			Node before = null;
+			Node after = null;
+			
+			for (int i = 0; i < this.size(); i++) { // it works time to refactor everything else
+				if (current.getString() == obj) {
+					before = current.prev;
+					after = current.next;
+					
+					if (before != null ) {
+						before.next = after;
+					}
+					else {
+						this.head = after;
+					}
+					
+					if (after != null) {
+						after.prev = before;
+					}
+					else {
+						this.tail = before;
+					}
+					
+					return true;
+				}
+				else {
+					current = current.next;
+				}
+			}
+			
+			return false;			
+		}
+		else {
+			throw new NullPointerException();
+		}
 	}
 	
 	@Override
@@ -239,6 +258,18 @@ public class DSEList implements List {
 	@Override
 	public boolean equals(Object other) {
 		return true;
+	}
+	
+	public void dPrint() {
+		System.out.println("Head node: " + this.head + " node text: " + this.head.getString() + " previous: " + this.head.prev + " next: " + this.head.next);
+		System.out.println("Tail node: " + this.tail + " node text: " + this.tail.getString() + " previous: " + this.tail.prev + " next: " + this.tail.next);
+		
+		Node current = this.head;
+		for (int i = 0; i < this.size(); i++) {
+			System.out.println("node: " + current + " node text: " + current.getString() + " previous: " + current.prev + " next: " + current.next);
+			current = current.next;
+		}
+		System.out.println();
 	}
 	
 }
