@@ -70,6 +70,7 @@ public class DSEList implements List {
 
 	//returns the index of the String parameter 
 	public int indexOf(String obj) {
+		
 	}
 	
 	//returns String at parameter's index
@@ -208,7 +209,24 @@ public class DSEList implements List {
 	}
 
 	//searches list for parameter's String return true if found
-	public boolean contains(String obj) {
+	public boolean contains(String obj) throws NullPointerException {
+		if (obj != null) {
+			Node current = this.head;
+			
+			for (int i = 0; i < this.size(); i++) {
+				if (current.getString().equals(obj)) {
+					return true;
+				}
+				else {
+					current = current.next;
+				}
+			}
+			
+			return false;			
+		}
+		else {
+			throw new NullPointerException();
+		}
 	}
 
 	//removes the parameter's String form the list
@@ -219,7 +237,7 @@ public class DSEList implements List {
 			Node before = null;
 			Node after = null;
 			
-			for (int i = 0; i < this.size(); i++) { // it works time to refactor everything else
+			for (int i = 0; i < this.size(); i++) {
 				if (current.getString().equals(obj)) {
 					before = current.prev;
 					after = current.next;
