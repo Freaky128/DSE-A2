@@ -161,39 +161,46 @@ public class DSEList implements List {
 	//add String at parameter's index
 	public boolean add(int index, String obj) throws NullPointerException, IndexOutOfBoundsException{
 		if (obj != null) {
-			
-			if (index == 0) {
-				Node n = new Node(this.head, null, obj);
-				this.head.prev = n;
-				this.head = n;
+			if (index >= 0 && index <= this.size()) {
+				Node before = null;
+				Node after = null;
 				
-			}
-			else if(index == this.size()) {
-				Node n = new Node(null, this.tail, obj);
-				this.tail.next = n;
-				this.tail = n;
-
-			}
-			else if (index > this.size() || index < 0) {
-				throw new IndexOutOfBoundsException();
-				
-			}
-			else {
-				int count = 0;
-				Node current = this.head;
-				
-				while (count < (index - 1)) {
-					current = current.next;
-					count ++;
+				if (index != 0) {
+					before = this.head;
+					
+					for (int i = 0; i < (index -1); i++) {
+						before = before.next;
+					}
+					
+					after = before.next;
+				}
+				else {
+					after = this.head;
 				}
 				
-				Node n = new Node(current.next, current, obj);
-				current.next = n;
-				current = n.next;
-				current.prev = n;
+				Node n = new Node(after, before, obj);
+				
+				if (before != null ) {
+					before.next = n;
+				}
+				else {
+					this.head = n;
+				}
+				
+				if (after != null) {
+					after.prev = n;
+				}
+				else {
+					this.tail = n;
+				}
+				
+				return true;
+			
+			}	
+			else {
+				throw new IndexOutOfBoundsException();
 			}
 			
-			return true;			
 		}
 		else {
 			throw new NullPointerException();
@@ -213,7 +220,7 @@ public class DSEList implements List {
 			Node after = null;
 			
 			for (int i = 0; i < this.size(); i++) { // it works time to refactor everything else
-				if (current.getString() == obj) {
+				if (current.getString().equals(obj)) {
 					before = current.prev;
 					after = current.next;
 					
