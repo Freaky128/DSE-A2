@@ -70,7 +70,18 @@ public class DSEList implements List {
 
 	//returns the index of the String parameter 
 	public int indexOf(String obj) {
+		Node current = this.head;
 		
+		for (int i = 0; i < this.size(); i++) {
+			if (current.getString().equals(obj)) {
+				return i;
+			}
+			else {
+				current = current.next;
+			}
+		}
+		
+		return -1;
 	}
 	
 	//returns String at parameter's index
