@@ -31,46 +31,41 @@ public class DSEList implements List {
 
 	//remove the String at the parameter's index
 	public String remove(int index) throws IndexOutOfBoundsException{
-		String token = "";
-		Node current = null;
-		
-		if (index == 0) { // could use a switch instead? // doesn't work for list of 1 node
-			token = this.head.getString();
+		if (index >= 0 && index < this.size()) {
 			
-			current = this.head.next;
-			current.prev = null;
-			this.head = current;
+			Node current = this.head;
+			Node before = null;
+			Node after = null;
 			
-		}
-		else if (index == (this.size()-1)) {
-			token = this.tail.getString();
-			
-			current = this.tail.prev;
-			current.next = null;
-			this.tail = current;
-		}
-		else if (index < 0 || index > (this.size()-1)){
-			throw new IndexOutOfBoundsException();
-		}
-		else {
-			int count = 0;
-			current = this.head;
-			
-			while (count < index) {
+			for (int i = 0; i < index; i++) {
 				current = current.next;
-				count ++;
 			}
 			
-			token = current.getString();
-			
-			Node before = current.prev;
-			Node after = current.next;
-			before.next = after;
-			after.prev = before;
-			current = null;
-		}
+			String token = current.getString();
 		
-		return token;
+			before = current.prev;
+			after = current.next;
+			
+			if (before != null ) {
+				before.next = after;
+			}
+			else {
+				this.head = after;
+			}
+			
+			if (after != null) {
+				after.prev = before;
+			}
+			else {
+				this.tail = before;
+			}
+			
+			return token;
+			
+		}
+		else {
+			throw new IndexOutOfBoundsException();
+		}
 	}
 
 	//returns the index of the String parameter 
