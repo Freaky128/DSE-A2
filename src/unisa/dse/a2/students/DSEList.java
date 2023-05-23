@@ -30,8 +30,47 @@ public class DSEList implements List {
 	}
 
 	//remove the String at the parameter's index
-	public String remove(int index) {
-
+	public String remove(int index) throws IndexOutOfBoundsException{
+		String token = "";
+		Node current = null;
+		
+		if (index == 0) { // could use a switch instead?
+			token = this.head.getString();
+			
+			current = this.head.next;
+			current.prev = null;
+			this.head = current;
+			
+		}
+		else if (index == (this.size()-1)) {
+			token = this.tail.getString();
+			
+			current = this.tail.prev;
+			current.next = null;
+			this.tail = current;
+		}
+		else if (index < 0 || index > (this.size()-1)){
+			throw new IndexOutOfBoundsException();
+		}
+		else {
+			int count = 0;
+			current = this.head;
+			
+			while (count < index) {
+				current = current.next;
+				count ++;
+			}
+			
+			token = current.getString();
+			
+			Node before = current.prev;
+			Node after = current.next;
+			before.next = after;
+			after.prev = before;
+			current = null;
+		}
+		
+		return token;
 	}
 
 	//returns the index of the String parameter 
@@ -149,7 +188,7 @@ public class DSEList implements List {
 				this.tail = n;
 
 			}
-			else if (index > this.size() && index < 0) {
+			else if (index > this.size() || index < 0) {
 				throw new IndexOutOfBoundsException();
 				
 			}
