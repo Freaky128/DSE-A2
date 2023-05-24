@@ -30,7 +30,7 @@ public class DSEListGeneric<T> implements ListGeneric<T> {
 		NodeGeneric<T> current = other.head;
 		
 		for (int i = 0; i < other.size(); i++) {
-			this.add(current.get());
+			this.add(current.get()); // Due to the fact that NodeGeneric doesn't have a copy constructor it's impossible to create a perfect deep copy as while the NodeGeneric objects are deep copied, the object NodeGeneric stores will only be shallow copied however this shouldn't matter as that object can't be modified anyway.  
 			current = current.next;
 		}
 	}
@@ -320,6 +320,18 @@ public class DSEListGeneric<T> implements ListGeneric<T> {
 		}
 		
 		return false;
+	}
+	
+	public void dPrint() {
+		System.out.println("Head node: " + this.head + " node text: " + this.head.get() + " previous: " + this.head.prev + " next: " + this.head.next);
+		System.out.println("Tail node: " + this.tail + " node text: " + this.tail.get() + " previous: " + this.tail.prev + " next: " + this.tail.next);
+		
+		NodeGeneric<T> current = this.head;
+		for (int i = 0; i < this.size(); i++) {
+			System.out.println("node: " + current + " node text: " + current.get() + " previous: " + current.prev + " next: " + current.next);
+			current = current.next;
+		}
+		System.out.println();
 	}
 	
 }
