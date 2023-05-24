@@ -13,6 +13,7 @@ public class SecuritiesExchange {
 	private String name;
 	
 	public String getName() {
+		return name;
 	}
 	
 	/**
@@ -34,8 +35,11 @@ public class SecuritiesExchange {
 	 * Initialises the exchange ready to handle brokers, announcements, and companies
 	 * @param name
 	 */
-	public SecuritiesExchange(String name)
-	{
+	public SecuritiesExchange(String name) {
+		this.name = name;
+		brokers = new DSEListGeneric<StockBroker>();
+		announcements = new DSEListGeneric<String>();
+		companies = new HashMap<String, ListedCompany>();
 	}
 	
 	/**
@@ -43,16 +47,28 @@ public class SecuritiesExchange {
 	 * @param company
 	 * @return true if the company was added, false if it was not
 	 */
-	public boolean addCompany(ListedCompany company)
-	{
+	public boolean addCompany(ListedCompany company) {
+		if (company == null || companies.containsKey(company.getCode())) {
+			return false;
+		}
+		else {
+			companies.put(company.getCode(), company);
+			return true;
+		}
 	}
 
 	/**
-	 * Adds the given broke to the list of brokers on the exchange
+	 * Adds the given broker to the list of brokers on the exchange
 	 * @param company
 	 */
-	public boolean addBroker(StockBroker broker)
-	{
+	public boolean addBroker(StockBroker broker) {
+		if (broker == null || brokers.contains(broker)) {
+			return false;
+		}
+		else {
+			brokers.add(broker);
+			return true;
+		}
 	}
 	
 	/**
@@ -71,12 +87,40 @@ public class SecuritiesExchange {
 	 * @return The number of successful trades completed across all brokers
 	 * @throws UntradedCompanyException when traded company is not listed on this exchange
 	 */
-	public int processTradeRound()
-	{
+	public int processTradeRound() throws UntradedCompanyException{
+		StockBroker broker = null;
+		ListedCompany company = null;
+		int currentPrice = 0;
+		int count = 0;
+		
+		for (int i = 0; i < brokers.size(); i++) {
+			broker = brokers.get(i);
+			Trade t = broker.getNextTrade();
+			
+			if (t != null) {
+				company = companies.get(t.getCompanyCode());
+				if (company != null) {
+					currentPrice = company.getCurrentPrice();
+					company.processTrade(t.getShareQuantity());
+					
+					announcements.add("Trade: " + t.getShareQuantity() + " " + t.listedCompanyCode + " @ " + currentPrice + " via " + broker.getName());
+					count++;
+				}
+				else {
+					throw new UntradedCompanyException(t.getCompanyCode());
+				}
+			}
+		}
+		for (int i = 0; i < announcements.size(); i++) {
+			System.out.println(announcements.get(i));
+		}
+		System.out.println("");
+		
+		return count;
 	}
 	
 	public int runCommandLineExchange(Scanner sc)
 	{
-		
+		return 0;
 	}
 }
