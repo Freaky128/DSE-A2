@@ -2,8 +2,6 @@ package unisa.dse.a2.students;
 
 import java.util.PriorityQueue;
 
-import students.InvalidInput;
-
 public class StockBroker {
 
 	/**
