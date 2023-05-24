@@ -77,7 +77,6 @@ public class StockBroker {
 			}
 			else {
 				pendingTrades.add(order);
-				System.out.println("here");
 				return true;
 			}
 		}
