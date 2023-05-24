@@ -2,6 +2,8 @@ package unisa.dse.a2.students;
 
 import java.util.PriorityQueue;
 
+import students.InvalidInput;
+
 public class StockBroker {
 
 	/**
@@ -27,9 +29,22 @@ public class StockBroker {
 	 * Adds the company code to the watchlist if it's not null and not already in there
 	 * @param companyCode
 	 * @return true if added
+	 * 
+	 * @throws NullPointerException if the specified string is null
 	 */
-	public boolean addWatchlist(String companyCode)
-	{
+	public boolean addWatchlist(String companyCode) throws NullPointerException {
+		try {
+			if (watchList.contains(companyCode)) {
+				return false;
+			}
+			else {
+				watchList.add(companyCode);
+				return true;
+			}
+		}
+		catch(NullPointerException e) {
+			return false;
+		}
 	}
 	
 	private String name;
@@ -39,38 +54,53 @@ public class StockBroker {
 	 * @return
 	 */
 	public String getName() {
+		return name;
 	}
 	
 	/**
 	 * Should store the broker's name and ensure the broker is setup ready to use
 	 * @param name
 	 */
-	public StockBroker(String name)
-	{
+	public StockBroker(String name) {
+		this.name = name;
 	}
 	
 	/**
 	 * Adds the Trade to the pendingTrades list if it's not null and not already in there
 	 * @param companyCode
 	 * @return true if added
+	 * 
+	 * @throws NullPointerException
 	 */
-	public boolean placeOrder(Trade order)
-	{
+	public boolean placeOrder(Trade order) throws NullPointerException {
+		try {
+			if (pendingTrades.contains(order)) {
+				return false;
+			}
+			else {
+				pendingTrades.add(order);
+				System.out.println("here");
+				return true;
+			}
+		}
+		catch (NullPointerException e) {
+			return false; 
+		}
 	}
 	
 	/**
 	 * Gets, removes, and returns the next trade to process
 	 * @return Trade to process
 	 */
-	public Trade getNextTrade()
-	{
+	public Trade getNextTrade() {
+		return pendingTrades.poll();
 	}
 	
 	/**
 	 * @return Number of pending trades
 	 */
-	public int getPendingTradeCount()
-	{
+	public int getPendingTradeCount(){
+		return pendingTrades.size();
 	}
 
 	/**
