@@ -86,6 +86,7 @@ public class Trade implements Comparable<Trade> {
 	 *  
 	 * @return The ordering priority of the trade
 	 */
+	// Does this need an @override tag? Also I worked out PriorityQueue is what actually invokes this but explaining that in the assignment spec would have been nice.
 	public int compareTo(Trade t) {
 		DSEListGeneric<String> thisWatchList = this.getStockBroker().getWatchlist();
 		DSEListGeneric<String> TWatchList = t.getStockBroker().getWatchlist();

@@ -67,7 +67,7 @@ public class ListGenericTest extends DSUnitTesting {
 		}
 
 		s.add(new Trade(null, 2));
-		assertEquals("Changes to original list should not impact the second list", 1, 1);
+		assertEquals("Changes to original list should not impact the second list", 1, 1); // ???
 
 	}
 

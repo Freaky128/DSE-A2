@@ -45,7 +45,7 @@ public class ListedCompany {
 	 */
 	public int processTrade(int quantity) {
 		currentPrice += quantity / 100;
-		if (currentPrice < 1) {
+		if (currentPrice < 1) { // Makes sure stock price never goes under 1
 			currentPrice = 1;
 		}
 		

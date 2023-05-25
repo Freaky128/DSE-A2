@@ -20,7 +20,7 @@ public class StockBroker {
 	 * @return
 	 */
 	public DSEListGeneric<String> getWatchlist() {
-		return new DSEListGeneric<String>(watchList);
+		return new DSEListGeneric<String>(watchList); // Uses DSEListGeneric copy constructor
 	}
 	
 	/**

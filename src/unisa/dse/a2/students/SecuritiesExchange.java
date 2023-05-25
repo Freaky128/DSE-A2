@@ -48,7 +48,7 @@ public class SecuritiesExchange {
 	 * @return true if the company was added, false if it was not
 	 */
 	public boolean addCompany(ListedCompany company) {
-		if (company == null || companies.containsKey(company.getCode())) {
+		if (company == null || companies.containsKey(company.getCode())) { // Checks if company is null or if it's already listed
 			return false;
 		}
 		else {
@@ -62,7 +62,7 @@ public class SecuritiesExchange {
 	 * @param company
 	 */
 	public boolean addBroker(StockBroker broker) {
-		if (broker == null || brokers.contains(broker)) {
+		if (broker == null || brokers.contains(broker)) { // Checks if the broker is null or if it's already added
 			return false;
 		}
 		else {
@@ -91,33 +91,32 @@ public class SecuritiesExchange {
 		StockBroker broker = null;
 		ListedCompany company = null;
 		int currentPrice = 0;
-		int count = 0;
+		int count = 0; // Number of trades completed
 		
-		for (int i = 0; i < brokers.size(); i++) {
-			broker = brokers.get(i);
-			Trade t = broker.getNextTrade();
+		for (int i = 0; i < brokers.size(); i++) { // Cycles brokers
+			broker = brokers.get(i); // Gets the next broker
+			Trade t = broker.getNextTrade(); // Gets the brokers trade
 			
-			if (t != null) {
-				company = companies.get(t.getCompanyCode());
-				if (company != null) {
-					currentPrice = company.getCurrentPrice();
+			if (t != null) { // Checks if the broker actually has a next trade
+				company = companies.get(t.getCompanyCode()); // Gets the company associated with the trade
+				if (company != null) { // Checks the company is listed
+					currentPrice = company.getCurrentPrice(); // Gets the share price before the trade
 					company.processTrade(t.getShareQuantity());
 					
 					announcements.add("Trade: " + t.getShareQuantity() + " " + t.listedCompanyCode + " @ " + currentPrice + " via " + broker.getName());
-					count++;
+					count++; // Increments successful trade count
 				}
 				else {
 					throw new UntradedCompanyException(t.getCompanyCode());
 				}
 			}
 		}
-		for (int i = 0; i < announcements.size(); i++) {
-			System.out.println(announcements.get(i));
-		}
-		System.out.println("");
 		
 		return count;
 	}
+	
+	// What is up with testList_CopyConstructor and testStockBroker_GetNextTrade.
+	// TestStockBroker_GetNextTrade is straight out a copy of testStockBroker_GetPendingTradeCount
 	
 	public int runCommandLineExchange(Scanner sc)
 	{
