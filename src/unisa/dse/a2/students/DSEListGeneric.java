@@ -8,21 +8,20 @@ import unisa.dse.a2.interfaces.ListGeneric;
  */
 public class DSEListGeneric<T> implements ListGeneric<T> {
 	
-	public NodeGeneric<T> head = null;
-	private NodeGeneric<T> tail = null;
+	public NodeGeneric<T> head = null; // Object at the start of the list
+	private NodeGeneric<T> tail = null; // Object at the end of the list
 
-	public DSEListGeneric() {
-		
-	}
+	public DSEListGeneric() {}
+	
 	public DSEListGeneric(NodeGeneric<T> head) {
 		this.head = head;
 		NodeGeneric<T> current = this.head;
 		
-		while (current.next != null) {
+		while (current.next != null) { // Finds the last object in the list
 			current = current.next;
 		}
 		
-		this.tail = current;
+		this.tail = current; // Sets last object
 	}
 	
 	//Takes a list then adds each element into a new list
@@ -30,43 +29,43 @@ public class DSEListGeneric<T> implements ListGeneric<T> {
 		NodeGeneric<T> current = other.head;
 		
 		for (int i = 0; i < other.size(); i++) {
-			this.add(current.get()); // Due to the fact that NodeGeneric doesn't have a copy constructor it's impossible to create a perfect deep copy as while the NodeGeneric objects are deep copied, the object NodeGeneric stores will only be shallow copied however this shouldn't matter as that object can't be modified anyway.  
+			this.add(current.get()); // Creates a new node with the object from the node to be copied. // Due to the fact that NodeGeneric doesn't have a copy constructor it's impossible to create a perfect deep copy as while the NodeGeneric objects are deep copied, the object NodeGeneric stores will only be shallow copied however this shouldn't matter as that object can't be modified anyway.  
 			current = current.next;
 		}
 	}
 
 	//remove and return the item at the parameter's index
 	public T remove(int index) throws IndexOutOfBoundsException{
-		if (index >= 0 && index < this.size()) {
+		if (index >= 0 && index < this.size()) { // Checks index is within bounds of the list
 			
-			NodeGeneric<T> current = this.head;
-			NodeGeneric<T> before = null;
-			NodeGeneric<T> after = null;
+			NodeGeneric<T> current = this.head; // Object used to find the node to remove
+			NodeGeneric<T> before = null; // Node preceding the node to be removed
+			NodeGeneric<T> after = null; // Node following the node to be removed
 			
-			for (int i = 0; i < index; i++) {
+			for (int i = 0; i < index; i++) { // Finds the node at the specified index
 				current = current.next;
 			}
 			
-			T t = current.get();
+			T t = current.get(); // Stores the object the node being removed was storing
 		
 			before = current.prev;
 			after = current.next;
 			
-			if (before != null ) {
-				before.next = after;
-			}
+			if (before != null ) {   // If there was a node before the node being removed (the head isn't being removed), 
+				before.next = after; // the before node's next attribute is set to the node after the node being removed.
+			}						 // (This may be null if the tail is being removed)
 			else {
-				this.head = after;
+				this.head = after; // If it was the head being removed a new head is assigned
 			}
 			
-			if (after != null) {
-				after.prev = before;
-			}
+			if (after != null) {     // If there is a node after the node being removed (the tail isn't being removed),
+				after.prev = before; // the after node's prev attribute is set to the node before the node being removed.
+			}						 // (This may be null if the head is being removed)
 			else {
-				this.tail = before;
+				this.tail = before; // If it was the tail being removed a new tail is assigned
 			}
 			
-			return t;
+			return t; // returns object from the node that was removed
 			
 		}
 		else {
@@ -78,12 +77,12 @@ public class DSEListGeneric<T> implements ListGeneric<T> {
 	public int indexOf(T obj) {
 		NodeGeneric<T> current = this.head;
 		
-		for (int i = 0; i < this.size(); i++) {
+		for (int i = 0; i < this.size(); i++) { // Cycles the list
 			if (current.get().equals(obj)) {
-				return i;
+				return i; // If a match is found the index is returned
 			}
 			else {
-				current = current.next;
+				current = current.next; // If a match isn't found the next node is selected
 			}
 		}
 		
@@ -92,13 +91,11 @@ public class DSEListGeneric<T> implements ListGeneric<T> {
 	
 	//returns item at parameter's index
 	public T get(int index) {
-		if (index < this.size() && index >= 0) {
-			int count = 0;
-			NodeGeneric<T> current = this.head;
+		if (index < this.size() && index >= 0) { // Checks if the index is in bounds
+			NodeGeneric<T> current = this.head; // Node at the current index
 			
-			while (count < index) {
+			for (int i = 0; i < index; i++) {
 				current = current.next;
-				count ++;
 			}
 			
 			return current.get();
@@ -111,7 +108,7 @@ public class DSEListGeneric<T> implements ListGeneric<T> {
 
 	//checks if there is a list
 	public boolean isEmpty() {
-		if (this.head == null) {
+		if (this.head == null) { // head will be null if there are no nodes
 			return true;
 		}
 		else {
@@ -122,13 +119,12 @@ public class DSEListGeneric<T> implements ListGeneric<T> {
 	//return the size of the list
 	public int size() {
 		int count = 0;
-		NodeGeneric<T> current = null;
 		
-		if (!this.isEmpty()) {
-			current = this.head;
-			count++; 
+		if (!this.isEmpty()) { // only begins the count if the list isn't empty
+			NodeGeneric<T> current = this.head; // Node at the current index
+			count++; // Add to the count to include the head node
 			
-			while (current.next != null) {
+			while (current.next != null) { // Continues count until there are no more nodes to come
 				current = current.next;
 				count++;
 			}
@@ -140,12 +136,12 @@ public class DSEListGeneric<T> implements ListGeneric<T> {
 	//Take each element of the list a writes them to a string 
 	@Override
 	public String toString() {
-		String concat = "";
+		String concat = ""; // Used to hold the concatenated objects 
 		NodeGeneric<T> current = this.head;
 		
-		for (int i = 0; i < this.size(); i++) {
+		for (int i = 0; i < this.size(); i++) { // Cycles list
 			concat += current.get();
-			if (current != this.tail) { // might have to change to equals method
+			if (current != this.tail) { // Adds a trailing space as long as the node isn't the tail
 				concat += " ";
 			}
 			
@@ -160,13 +156,13 @@ public class DSEListGeneric<T> implements ListGeneric<T> {
 		if (obj != null) {
 			NodeGeneric<T> n = new NodeGeneric<T>((NodeGeneric<T>)null, this.tail, obj);
 			
-			if (this.isEmpty()) {
+			if (this.isEmpty()) { // different assignment for if the list is empty
 				this.head = n;
 				this.tail = n;
 			}
 			else {
-				this.tail.next = n;
-				this.tail = n;
+				this.tail.next = n; // Assigns the next attribute for the old tail
+				this.tail = n; // Sets the new tail
 			}
 			
 			return true;
@@ -179,34 +175,34 @@ public class DSEListGeneric<T> implements ListGeneric<T> {
 	//add item at parameter's index
 	public boolean add(int index, T obj) throws NullPointerException, IndexOutOfBoundsException {
 		if (obj != null) {
-			if (index >= 0 && index <= this.size()) {
-				NodeGeneric<T> before = null;
-				NodeGeneric<T> after = null;
+			if (index >= 0 && index <= this.size()) { // Checks the given index is in bounds of the list
+				NodeGeneric<T> before = null; // The node before the node to be inserted
+				NodeGeneric<T> after = null; // The node after the node to  be inserted
 				
-				if (index != 0) {
+				if (index != 0) { // Only begins the before assignment if the new node isn't to be inserted at the head
 					before = this.head;
 					
-					for (int i = 0; i < (index -1); i++) {
+					for (int i = 0; i < (index -1); i++) { // Finds the node before the index the node will be inserted at
 						before = before.next;
 					}
 					
-					after = before.next;
+					after = before.next; // Sets the node after the insertion index
 				}
 				else {
-					after = this.head;
+					after = this.head; // If the new node is to be inserted at the head, after is set to the old head
 				}
 				
-				NodeGeneric<T> n = new NodeGeneric<T>(after, before, obj);
+				NodeGeneric<T> n = new NodeGeneric<T>(after, before, obj); // Creates the node that will be inserted
 				
-				if (before != null ) {
-					before.next = n;
+				if (before != null ) { // If the node isn't being added to the head then the next attribute of the node,
+					before.next = n;   // before is set to the inserted node.
 				}
 				else {
 					this.head = n;
 				}
 				
-				if (after != null) {
-					after.prev = n;
+				if (after != null) { // If the node isn't being added to the tail then the prev attribute of the node,
+					after.prev = n;  // after is set to the inserted node.
 				}
 				else {
 					this.tail = n;
@@ -228,14 +224,14 @@ public class DSEListGeneric<T> implements ListGeneric<T> {
 	//searches list for parameter's String return true if found
 	public boolean contains(T obj) throws NullPointerException {
 		if (obj != null) {
-			NodeGeneric<T> current = this.head;
+			NodeGeneric<T> current = this.head; // The node at the current index
 			
-			for (int i = 0; i < this.size(); i++) {
-				if (current.get().equals(obj)) {
+			for (int i = 0; i < this.size(); i++) { // Cycles the list
+				if (current.get().equals(obj)) { // Compares the given object and the current node's object.
 					return true;
 				}
 				else {
-					current = current.next;
+					current = current.next; // Selects the next node
 				}
 			}
 			
@@ -250,37 +246,37 @@ public class DSEListGeneric<T> implements ListGeneric<T> {
 	public boolean remove(T obj) throws NullPointerException {
 		if (obj != null) {
 			
-			NodeGeneric<T> current = this.head;
-			NodeGeneric<T> before = null;
-			NodeGeneric<T> after = null;
+			NodeGeneric<T> current = this.head; // Node at the current index
+			NodeGeneric<T> before = null; // Node preceding the node to be removed
+			NodeGeneric<T> after = null; // Node following the node to be removed
 			
-			for (int i = 0; i < this.size(); i++) {
-				if (current.get().equals(obj)) {
-					before = current.prev;
+			for (int i = 0; i < this.size(); i++) { // Cycles the list
+				if (current.get().equals(obj)) { // Compares the current node's object to the given object
+					before = current.prev; // If the object is a match the nodes before and after are selected
 					after = current.next;
 					
-					if (before != null ) {
-						before.next = after;
-					}
+					if (before != null ) {   // If there was a node before the node being removed (the head isn't being removed), 
+						before.next = after; // the before node's next attribute is set to the node after the node being removed.
+					}						 // (This may be null if the tail is being removed)
 					else {
-						this.head = after;
+						this.head = after; // If it was the head being removed a new head is assigned
 					}
 					
-					if (after != null) {
-						after.prev = before;
-					}
+					if (after != null) {     // If there is a node after the node being removed (the tail isn't being removed),
+						after.prev = before; // the after node's prev attribute is set to the node before the node being removed.
+					}						 // (This may be null if the head is being removed)
 					else {
-						this.tail = before;
+						this.tail = before; // If it was the tail being removed a new tail is assigned
 					}
 					
-					return true;
+					return true;  // Successful removal
 				}
 				else {
 					current = current.next;
 				}
 			}
 			
-			return false;			
+			return false; // Non-successful removal (node with the given object didn't exist)
 		}
 		else {
 			throw new NullPointerException();
@@ -292,7 +288,7 @@ public class DSEListGeneric<T> implements ListGeneric<T> {
 		NodeGeneric<T> current = this.head;
 		int hash = 0;
 		
-		for (int i = 0; i < this.size(); i++) {
+		for (int i = 0; i < this.size(); i++) { // Cycles the list and adds the individual node's hashes together
 			hash += current.hashCode();
 			current = current.next;
 		}
@@ -302,13 +298,13 @@ public class DSEListGeneric<T> implements ListGeneric<T> {
 
 	@Override
 	public boolean equals(Object other) {
-		if (this.size() == ((DSEListGeneric<T>)other).size()) {
+		if (this.size() == ((DSEListGeneric<T>)other).size()) { // Checks list sizes match
 			NodeGeneric<T> thisCurrent = this.head;
 			NodeGeneric<T> otherCurrent = ((DSEListGeneric<T>)other).head;
 
-			for (int i = 0; i < this.size(); i++) {
-				if (thisCurrent.equals(otherCurrent)) {
-					thisCurrent = thisCurrent.next;
+			for (int i = 0; i < this.size(); i++) {  
+				if (thisCurrent.equals(otherCurrent)) { // Checks if each list's nodes are the same
+					thisCurrent = thisCurrent.next; // Selects the next nodes
 					otherCurrent = otherCurrent.next;
 				}
 				else {
@@ -322,6 +318,7 @@ public class DSEListGeneric<T> implements ListGeneric<T> {
 		return false;
 	}
 	
+	// A method I added for printing the list for debug purposes
 	public void dPrint() {
 		System.out.println("Head node: " + this.head + " node text: " + this.head.get() + " previous: " + this.head.prev + " next: " + this.head.next);
 		System.out.println("Tail node: " + this.tail + " node text: " + this.tail.get() + " previous: " + this.tail.prev + " next: " + this.tail.next);
